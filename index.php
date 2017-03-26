@@ -23,7 +23,10 @@
 
 		foreach ($XML->owl_Class as $class) {
 			foreach ($class->rdfs_subClassOf as $subClassOf) {
-				$select_array[] = str_replace(PREFIX, '', $subClassOf['rdf_resource']);
+			    if($subClassOf['rdf_resource']=="http://www.semanticweb.org/alezi/ontologies/2017/2/ontology#Программирование"){
+                    $select_array[] = str_replace(PREFIX, '', $class['rdf_about']);
+                }
+                $select_array[] = str_replace(PREFIX, '', $subClassOf['rdf_resource']);
 			}
 		}
 
@@ -32,14 +35,14 @@
 		foreach ($XML->owl_Class as $class) :
 			$rdf_about = str_replace(PREFIX, '', $class['rdf_about']);
 	?>
-            <div class="col-xs-6 col-md-6">
+            <div class="col-xs-12 col-md-6">
                     <p><strong><?= $rdf_about ?></strong></p>
                     <form action="/" class="owl_Class update" method="POST">
                         <div class="form-group">
                             <input class="form-control" type="hidden" name="id" value="<?= $rdf_about; ?>">
-                            <label for="">rdf_about</label>
+                            <label for="">Термин</label>
                             <input class="form-control" type="text" name="rdf_about" value="<?= $rdf_about; ?>">
-                            <label for="">subClassOf</label>
+                            <label for="">Класс</label>
                             <?php
 			$rdf_resource = str_replace(PREFIX, '', $class->rdfs_subClassOf['rdf_resource']);
 			$select_html = '<select name="subClassOf" class="form-control">';
@@ -59,7 +62,7 @@
 			echo $select_html;
 		?>
                                 <br>
-                                <label for="">comment</label>
+                                <label for="">Комментарий</label>
                                 <br>
                                 <textarea name="rdfs_comment" id="" class="form-control">
                                     <?= $class->rdfs_comment ?>
